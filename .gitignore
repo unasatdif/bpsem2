@@ -3,4 +3,6 @@
 # for this project. 
 
 #ignore .vscode directory
-.vscode/ 
+.vscode/
+#ignore bin directory
+bin/ 
