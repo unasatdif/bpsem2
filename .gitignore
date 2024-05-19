@@ -1,0 +1,6 @@
+# Progit gitignore file. 
+# List what files & directories git should ignore by default 
+# for this project. 
+
+#ignore .vscode directory
+.vscode/ 
