@@ -26,10 +26,10 @@ The application must be able to retrieve the following information with a query:
 
 ### Team members 
 Our team consists of the following members: 
- - Adit Bajnath      | BI/1123/0
+ - Adit Bajnath      | BI/1123/006
  - Dimitri Forster   | BI/1123/013
- - Melvin Geysvliet  | BI/1123/
- - Darryl Lokhai     | BI/1123/
+ - Melvin Geysvliet  | BI/1123/014
+ - Darryl Lokhai     | BI/1123/020
 
 ## Folder Structure
 
