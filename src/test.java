@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class byadit {
+public class test {
     static final String DB_URL = "jdbc:mysql://localhost/bpdb";
     static final String USER = "root";
     static final String PASS = "Adrena4Line";
@@ -25,6 +25,9 @@ public class byadit {
                 case 2:
                     lookupInfo(scanner);
                     break;
+                case 3:
+                    exit = true;
+                    break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
@@ -37,6 +40,7 @@ public class byadit {
         System.out.println("Welcome to the Hackathon registration app. Please choose an option:");
         System.out.println("1 - Register");
         System.out.println("2 - Lookup info");
+        System.out.println("3 - Exit");
         System.out.print("Enter your choice: ");
     }
 
@@ -70,19 +74,19 @@ public class byadit {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
              Statement stmt = conn.createStatement()) {
 
+            String insertTeam = "INSERT INTO team (naam) VALUES ('" + teamNaam + "')";
+            stmt.executeUpdate(insertTeam);
+
             String insertPerson = "INSERT INTO person (voornaam, achternaam, geboorte_datum, leeftijd, team_id) VALUES ('"
                     + voornaam + "', '" + achternaam + "', '" + geboorteDatum + "', " + leeftijd + ", (SELECT id FROM team WHERE naam = '" + teamNaam + "'))";
             stmt.executeUpdate(insertPerson);
-
-            String insertTeam = "INSERT INTO team (naam) VALUES ('" + teamNaam + "')";
-            stmt.executeUpdate(insertTeam);
 
             String insertContact = "INSERT INTO contact_info (email, mobiel_nummer, adres) VALUES ('"
                     + email + "', '" + mobielNummer + "', '" + adres + "')";
             stmt.executeUpdate(insertContact);
 
             String insertSkill = "INSERT INTO ict_vaardigheid (omschrijving, student_id) VALUES ('"
-                    + vaardigheid + "', (SELECT id FROM person WHERE voornaam = '" + voornaam + "'))";
+                    + vaardigheid + "', (SELECT id FROM person WHERE voornaam = '" + voornaam + "' AND achternaam = '" + achternaam + "'))";
             stmt.executeUpdate(insertSkill);
 
             System.out.println("Gegevens succesvol geregistreerd...");
@@ -94,6 +98,10 @@ public class byadit {
     }
 
     private static void lookupInfo(Scanner scanner) {
+        System.out.print("Enter the team name: ");
+        scanner.nextLine(); // Consume newline
+        String teamName = scanner.nextLine();
+
         printLookupMenu();
         char lookupChoice = getLookupChoice(scanner);
 
@@ -102,26 +110,39 @@ public class byadit {
 
             switch (lookupChoice) {
                 case 'a':
-                    System.out.println("Showing teammates:");
+                    System.out.println("Teamleden namen:");
                     String sqlA = "SELECT person.voornaam, person.achternaam, team.naam AS team FROM person " +
-                                  "INNER JOIN team ON person.team_id = team.id";
+                                  "INNER JOIN team ON person.team_id = team.id " +
+                                  "WHERE team.naam = '" + teamName + "'";
                     displayResults(stmt.executeQuery(sqlA));
                     break;
                 case 'b':
-                    System.out.println("Showing teammates (including vaardigheden):");
+                    System.out.println("Teamleden en vaardigheden:");
                     String sqlB = "SELECT person.voornaam, person.achternaam, team.naam AS team, ict_vaardigheid.omschrijving " +
                                   "FROM person " +
                                   "INNER JOIN team ON person.team_id = team.id " +
-                                  "INNER JOIN ict_vaardigheid ON person.student_id = ict_vaardigheid.student_id";
+                                  "INNER JOIN ict_vaardigheid ON person.student_id = ict_vaardigheid.student_id " +
+                                  "WHERE team.naam = '" + teamName + "'";
                     displayResults(stmt.executeQuery(sqlB));
                     break;
                 case 'c':
-                    System.out.println("Showing teammates (including adres):");
+                    System.out.println("Teamleden en adres:");
                     String sqlC = "SELECT person.voornaam, person.achternaam, team.naam AS team, contact_info.adres " +
                                   "FROM person " +
                                   "INNER JOIN team ON person.team_id = team.id " +
-                                  "INNER JOIN contact_info ON person.student_id = contact_info.contact_id";
+                                  "INNER JOIN contact_info ON person.student_id = contact_info.contact_id " +
+                                  "WHERE team.naam = '" + teamName + "'";
                     displayResults(stmt.executeQuery(sqlC));
+                    break;
+                case 'd':
+                    System.out.println("Totaal aantal registranten:");
+                    String sqlD = "SELECT COUNT(id) AS totaal_registranten FROM person";
+                    displaySingleResult(stmt.executeQuery(sqlD));
+                    break;
+                case 'e':
+                    System.out.println("Registranten zonder groep:");
+                    String sqlE = "SELECT * FROM person WHERE team_id IS NULL";
+                    displayResults(stmt.executeQuery(sqlE));
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -144,11 +165,20 @@ public class byadit {
         }
     }
 
+    private static void displaySingleResult(ResultSet rs) throws SQLException {
+        if (rs.next()) {
+            int count = rs.getInt(1);
+            System.out.println("Totaal aantal registranten: " + count);
+        }
+    }
+
     private static void printLookupMenu() {
         System.out.println("Lookup info:");
         System.out.println("a - Teammates");
         System.out.println("b - Teammates (including vaardigheden)");
         System.out.println("c - Teammates (including adres)");
+        System.out.println("d - Totaal aantal registranten");
+        System.out.println("e - Registranten zonder groep");
         System.out.print("Enter your choice: ");
     }
 
