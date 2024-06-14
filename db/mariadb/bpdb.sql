@@ -13,14 +13,24 @@ drop database if exists bpdb;
 create database bpdb;
 use bpdb;
 
-# create team table 
+/*
+* tables & views creation to create:
+* 1. tables:
+*    - team
+*    - person
+*    - ict_vaardigheid
+*    - contact_info
+* 2. views:
+*    - overzicht
+*/
+#team table 
 drop table if exists team;
 create table team(
 id int primary key auto_increment,
 naam varchar(50) unique not null
 );
 
-# create person table
+#person table
 drop table if exists person;
 create table person (
 student_id int primary key auto_increment,
@@ -33,7 +43,7 @@ constraint person_fk_1
 	foreign key(team_id) references team(id)
 );
 
-# create ict_vaardigheid table
+#ict_vaardigheid table
 drop table if exists ict_vaardigheid; 
 create table ict_vaardigheid(
 id int primary key auto_increment, 
@@ -43,7 +53,7 @@ constraint ict_vaardigheid_fk_1
 	foreign key(student_id) references person(student_id)
 );
 
-# create contact_info table 
+#contact_info table 
 drop table if exists contact_info;
 create table contact_info(
 contact_id int primary key,
@@ -54,6 +64,29 @@ adres varchar(50) not null,
 constraint contact_info_fk_1
 	foreign key(contact_id) references person(student_id)
 );
+
+# overzicht view
+create or replace view overzicht as
+select 
+a.student_id,
+a.voornaam, 
+a.achternaam, 
+a.geboorte_datum, 
+a.leeftijd, 
+b.id team_id, 
+b.naam team, 
+c.omschrijving 'ict-vaardigheid',
+d.email,
+d.telefoon_nummer 'telefoonnummer', 
+d.mobiel_nummer 'mobielnummer', 
+d.adres
+from person a
+left join team b 
+on a.team_id = b.id
+left join ict_vaardigheid c 
+on a.student_id = c.student_id
+left join contact_info d
+on a.student_id = d.contact_id;
 
 # import table data
 
@@ -127,7 +160,7 @@ values
 ('Networking',2),
 ('Robotics',3),
 ('Business Intelligence',16),
-('Programming',25);
+('Data modeleren',25);
 
 # contact_info table 
 insert into contact_info(contact_id,email,mobiel_nummer,adres)
@@ -182,3 +215,18 @@ values
 (48,'guillianogouda@jourrapide.com','06-84875936','Oude Singel 200'),
 (49,'casperpeulen@rhyta.com','06-18289444','Ansekerke 23'),
 (50,'jiskabark@cuvox.de','06-74811748','Deventerweg 134');
+
+/*
+Queries for retrievel of data 
+select 
+count(student_id) 'totaal registraties', 
+count(team_id) 'registanten in een team',
+count(student_id)- count(team_id) 'registranten zonder team'
+from overzicht; 
+
+SELECT count(student_id) FROM overzicht where team is null; #studenten niet in een team
+SELECT count(student_id) FROM overzicht where team is not null; #studenten niet in een team
+SELECT * FROM overzicht where team is not null order by team;
+SELECT count(*) FROM bpdb.overzicht where telefoonnummer is null order by team;
+
+*/
