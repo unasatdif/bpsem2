@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class test {
+public class aditsoriginal {
     static final String DB_URL = "jdbc:mysql://localhost/bpdb";
     static final String USER = "root";
     static final String PASS = "Adrena4Line";
@@ -136,18 +136,19 @@ public class test {
                     break;
                 case 'd':
                     System.out.println("Totaal aantal registranten:");
-                    String sqlD = "SELECT COUNT(id) AS totaal_registranten FROM person";
+                    String sqlD = "SELECT COUNT(student_id) AS totaal_registranten FROM person";
                     displaySingleResult(stmt.executeQuery(sqlD));
                     break;
                 case 'e':
                     System.out.println("Registranten zonder groep:");
-                    String sqlE = "SELECT * FROM person WHERE team_id IS NULL";
+                    String sqlE = "select count(student_id) from person where team_id is null;";
                     displayResults(stmt.executeQuery(sqlE));
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
         } catch (SQLException e) {
+
             e.printStackTrace();
         }
     }
