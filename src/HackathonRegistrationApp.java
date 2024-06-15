@@ -21,24 +21,15 @@ public class HackathonRegistrationApp {
         private String geboorteDatum;
         private int leeftijd; 
         private int teamId;
-
-    }
-
-    public class IctVaardigheid{
-        private int id;
-        private String omschrijving;
-        private String studentId;
-    }
-
-    public class ContactInfo{
-        private int contactId;
+        private String vaardigheid;
         private String email;
         private String telefoonNummer;
         private String mobielNummer;
-        private String adres;
-    }
-    
+        private String adres
 
+    }
+
+    
     public static void main(String[] args) throws Exception {
         System.out.println("Hello World");
     }
