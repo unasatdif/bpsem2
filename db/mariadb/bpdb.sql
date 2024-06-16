@@ -75,7 +75,7 @@ a.geboorte_datum,
 a.leeftijd, 
 b.id team_id, 
 b.naam team, 
-c.omschrijving 'ict-vaardigheid',
+c.omschrijving 'ict_vaardigheid',
 d.email,
 d.telefoon_nummer 'telefoonnummer', 
 d.mobiel_nummer 'mobielnummer', 
@@ -160,7 +160,9 @@ values
 ('Networking',2),
 ('Robotics',3),
 ('Business Intelligence',16),
-('Data modeleren',25);
+('Data modeleren',25),
+('Java','4'),
+('Database','5');
 
 # contact_info table 
 insert into contact_info(contact_id,email,mobiel_nummer,adres)
@@ -217,16 +219,68 @@ values
 (50,'jiskabark@cuvox.de','06-74811748','Deventerweg 134');
 
 /*
-Queries for retrievel of data 
-select 
-count(student_id) 'totaal registraties', 
-count(team_id) 'registanten in een team',
-count(student_id)- count(team_id) 'registranten zonder team'
-from overzicht; 
-
-SELECT count(student_id) FROM overzicht where team is null; #studenten niet in een team
-SELECT count(student_id) FROM overzicht where team is not null; #studenten niet in een team
-SELECT * FROM overzicht where team is not null order by team;
-SELECT count(*) FROM bpdb.overzicht where telefoonnummer is null order by team;
-
+* Queries for retrievel of data 
+*
+* 1. Query aantal registraties
+* select count(student_id) 'aantal registraties' 
+* from overzicht; 
+*
+* 2. Query aantal registranten in een team
+* select count(student_id) 
+* from overzicht 
+* where team is null; 
+*
+* 3. Query aantal registranten niet in een team
+* select count(student_id) 
+* from overzicht 
+* where team is not null; 
+*
+* 4. Query totaal aantal teams
+* select count(id) from team;
+*
+* 5. Query aantal groepsleden per team
+* select team_id, team, count(student_id) 'aantal leden'
+* from overzicht
+* where team is not null
+* group by team
+* order by team_id;
+*
+* 6. Query namenlijst van teamleden in een specifieke team inclusief ict vaardigheid en adres
+* select concat(voornaam,' ',achternaam) naam, adres, ict_vaardigheid
+* from overzicht
+* where team = '?'; #substitute team name for ?
+*
+* 7. Queries voor nieuwe registratie zonder team
+* insert into person
+* values
+* (?,?,?,?,?,?);
+*
+* insert into ict_vaardigheid(omschrijving,student_id)
+* values
+* (?,?);
+*
+* insert into contact_info
+* values
+* (?????);
+*
+*
+* 8. Queries voor nieuwe registratie inclusief team
+* insert into team(naam) 
+* values ('?'); 
+*
+* insert into person
+* values
+* (?,?,?,?,?,?);
+*
+* insert into ict_vaardigheid
+* values
+* (?,?);
+*
+* insert into contact_info
+* values
+* (?????);
+*
+* 9. Query voor het achterhalen van de laatst aangemaakte team 
+* select max(id) from team;
+*
 */
