@@ -19,21 +19,25 @@ public class HackathonRegistrationApp {
             "c - List of entries without a team%n" +
             "d - List of team members from a specific team%ne - Back to main menu%n"; // Submenu string passed to printf
 
-    static int MainMenuChoice;
-    static char SubMenuChoice;
+    int mainMenuChoice;
+    static String subMenuChoice;
     static boolean exit = false;
-
-    public static int getMainMenuChoice() {
-        MainMenuChoice= user_input.nextInt();
-        return MainMenuChoice;
-    }
-
-    public static char getSubMenuChoice() {
-        return SubMenuChoice;
-    }
-
     String person[]; // array for person objects
     static Scanner user_input = new Scanner(System.in);
+
+    public static int getMainMenuChoice(Scanner user_input) {
+        return user_input.nextInt();
+    }
+
+    /*
+     * public static int setMainMenuChoice(Scanner user_input) {
+     * mainMenuChoice = user_input.nextInt();
+     * }
+     */
+
+    public static String getSubMenuChoice(Scanner user_input) {
+        return user_input.next();
+    }
 
     public class Person {
 
@@ -166,21 +170,23 @@ public class HackathonRegistrationApp {
 
         System.out.printf(Welcome);
         System.out.printf(MainMenu);
-
-        MainMenuChoice = getMainMenuChoice();
+        int mainMenuChoice = getMainMenuChoice(user_input);
 
         while (!exit) {
-                       
-            switch (MainMenuChoice) {
+
+            switch (mainMenuChoice) {
                 case 1:
                     System.out.println("you chose 1");
                     System.out.printf(MainMenu);
-                    user_input.nextInt();
+                    mainMenuChoice = getMainMenuChoice(user_input);
+
                     break;
 
                 case 2:
                     System.out.println("you chose 2");
-                    getMainMenuChoice();
+                    System.out.printf(MainMenu);
+                    mainMenuChoice = getMainMenuChoice(user_input);
+
                     break;
 
                 case 3:
