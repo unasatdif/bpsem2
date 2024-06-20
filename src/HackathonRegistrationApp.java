@@ -11,7 +11,7 @@ public class HackathonRegistrationApp {
 
     // static Strings for console menu
     static final String welcome = "Welcome to the Hackathon Registration console%n";
-    static final String exit = "Thank you for using the console$nSee you next time";
+    static final String exit = "Thank you for using the console%nSee you next time%n";
     static final String Main_Menu = "What would you like to do:%n" +
             "1 - Register%n2 - Lookup info%n3 - Exit%n"; // Main menu passed to printf
     static final String Sub_Menu = "What would you like to lookup?%n" +
@@ -245,5 +245,10 @@ public class HackathonRegistrationApp {
             }
         }
     }
+
+    public static void showRegistrationStatistics(){}
+    public static void showRegistrationEntries(){}
+    puclic static void showTeams(){}
+    public static void showTeamInfo(){}
 
 }
