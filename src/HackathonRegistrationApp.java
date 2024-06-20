@@ -10,18 +10,19 @@ public class HackathonRegistrationApp {
     static final String DB_PASS = "dimi"; // change to your db user password
 
     // static Strings for console menu
-    static final String Welcome = "Welcome to the Hackathon Registration console%n";
-    static final String Exit = "Thank you for using the console$nSee you next time";
-    static final String MainMenu = "What would you like to do:%n" +
+    static final String welcome = "Welcome to the Hackathon Registration console%n";
+    static final String exit = "Thank you for using the console$nSee you next time";
+    static final String Main_Menu = "What would you like to do:%n" +
             "1 - Register%n2 - Lookup info%n3 - Exit%n"; // Main menu passed to printf
-    static final String SubMenu = "What would you like to lookup?%n" +
+    static final String Sub_Menu = "What would you like to lookup?%n" +
             "a - Registration statistics%nb - List of all entries%n" +
             "c - List of entries without a team%n" +
             "d - List of team members from a specific team%ne - Back to main menu%n"; // Submenu string passed to printf
 
     int mainMenuChoice;
-    static String subMenuChoice;
-    static boolean exit = false;
+    char subMenuChoice;
+    static boolean quit = false;
+    static boolean returnToMainMenu = false;
     String person[]; // array for person objects
     static Scanner user_input = new Scanner(System.in);
 
@@ -35,8 +36,8 @@ public class HackathonRegistrationApp {
      * }
      */
 
-    public static String getSubMenuChoice(Scanner user_input) {
-        return user_input.next();
+    public static char getSubMenuChoice(Scanner user_input) {
+        return user_input.next().charAt(0);
     }
 
     public class Person {
@@ -168,30 +169,33 @@ public class HackathonRegistrationApp {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.printf(Welcome);
-        System.out.printf(MainMenu);
+        System.out.printf(welcome);
+        mainMenu();
+    }
+
+    public static void mainMenu() {
+        System.out.printf(Main_Menu);
         int mainMenuChoice = getMainMenuChoice(user_input);
 
-        while (!exit) {
+        while (!quit) {
 
             switch (mainMenuChoice) {
                 case 1:
                     System.out.println("you chose 1");
-                    System.out.printf(MainMenu);
+                    System.out.printf(Main_Menu);
                     mainMenuChoice = getMainMenuChoice(user_input);
 
                     break;
 
                 case 2:
                     System.out.println("you chose 2");
-                    System.out.printf(MainMenu);
-                    mainMenuChoice = getMainMenuChoice(user_input);
+                    subMenu();
 
                     break;
 
                 case 3:
-                    System.out.printf(Exit);
-                    exit = true;
+                    System.out.printf(exit);
+                    quit = true;
                     break;
 
                 default:
@@ -199,8 +203,47 @@ public class HackathonRegistrationApp {
                     break;
             }
         }
+    }
 
-        user_input.close();
+    public static void subMenu() {
+
+        System.out.printf(Sub_Menu);
+        char subMenuChoice = getSubMenuChoice(user_input);
+
+        while (!returnToMainMenu) {
+
+            switch (subMenuChoice) {
+                case 'a':
+                    System.out.println("you chose a");
+                    System.out.printf(Sub_Menu);
+                    subMenuChoice = getSubMenuChoice(user_input);
+                    break;
+
+                case 'b':
+                    System.out.println("you chose b");
+                    System.out.printf(Sub_Menu);
+                    subMenuChoice = getSubMenuChoice(user_input);
+                    break;
+
+                case 'c':
+                    System.out.println("you chose c");
+                    System.out.printf(Sub_Menu);
+                    subMenuChoice = getSubMenuChoice(user_input);
+                    break;
+
+                case 'd':
+                    System.out.println("you chose d");
+                    System.out.printf(Sub_Menu);
+                    subMenuChoice = getSubMenuChoice(user_input);
+                    break;
+
+                case 'e':
+                    returnToMainMenu = true;
+                    mainMenu();
+                    break;
+
+            }
+        }
     }
 
 }
