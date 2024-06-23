@@ -9,15 +9,88 @@ public class HackathonRegistrationApp {
     static final String DB_USER = "dimi"; // change to your db username
     static final String DB_PASS = "dimi"; // change to your db user password
 
+    // queries used to select info from the database 
+    static final String SQL_1 = "select count(student_id) 'totaal registraties'," + 
+                                "count(team_id) 'registanten in een team',"+
+                                "count(student_id)- count(team_id) 'registranten zonder team'"+
+                                "from overzicht;"; //  entry statistics (number of entries, number of entries with a team, number of entries without a team)
+
+    static final String SQL_2 = "select count(id) from team;"; //total number of teams
+
+    static final String SQL_3 = "select team_id, team, count(student_id) 'aantal leden'"+
+                                "from overzicht"+
+                                "where team is not null"+
+                                "group by team" +
+                                "order by team_id;"; // list of teams including team member count
+                                
+    static final String SQL_4 = "select concat(voornaam,' ',achternaam) naam, adres, ict_vaardigheid 'favoriete persoonlijke ict vaardigheid' "+
+                                "from overzicht"+
+                                "where team = '?';"; // list of team members from a specfic team substitute team name for ?
+
+    static final String SQL_5 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                "from overzicht; " ; // list of signups
+
+    static final String SQL_6 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                "from overzicht"+
+                                "where voornaam like ?; " ; // search list of signups on firstname
+
+    static final String SQL_7 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                "from overzicht"+
+                                "where achternaam like ?; " ; // search list of signups on lastname
+
+    static final String SQL_8 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                "from overzicht"+
+                                "where leeftijd like ?; " ; // search list of signups on age
+
+    static final String SQL_9 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                "from overzicht"+
+                                "where geboorte_datum like ?; " ; // search list of signups on date of birth
+
+    static final String SQL_10 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                "from overzicht"+
+                                "where geboorte_datum like ?; " ; // search list of signups on date of birth
+
+
+    static final String SQL_11 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                 "from overzicht"+
+                                 "where email like ?; " ; // search list of signups on email
+
+    static final String SQL_12 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                 "from overzicht"+
+                                 "where adres like ?; " ; // search list of signups on adres
+
+    static final String SQL_13 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                 "from overzicht"+
+                                 "where mobielnummer like ?; " ; // search list of signups on mobilenumber
+
+    static final String SQL_14 = "insert into team(naam)"+
+                                 "values"+
+                                 "(?);" ; // insert into team
+
+    static final String SQL_15 = "insert into person"+
+                                 "values"+
+                                 "(?,?,?,?,?,?);" ; // insert into person
+
+    static final String SQL_16 = "insert into ict_vaardigheid"+
+                                 "values"+
+                                 "(?,?);" ; // insert into ict_vaardigheid
+                                 
+    static final String SQL_17 = "insert into contact_info"+
+                                 "values"+
+                                 "(?,?,?,?,?);" ; // insert into contact_info
+
+    // queries used to insert info into the database
+
     // static Strings for console menu
     static final String welcome = "Welcome to the Hackathon Registration console%n";
-    static final String exit = "Thank you for using the console%nSee you next time%n";
-    static final String Main_Menu = "What would you like to do:%n" +
+    static final String exit =  "Thank you for using the console%nSee you next time%n";
+    static final String Main_Menu = "What would you like to do:%n"+
             "1 - Register%n2 - Lookup info%n3 - Exit%n"; // Main menu passed to printf
     static final String Sub_Menu = "What would you like to lookup?%n" +
-            "a - Registration statistics%nb - List of all entries%n" +
-            "c - List of entries without a team%n" +
-            "d - List of team members from a specific team%ne - Back to main menu%n"; // Submenu string passed to printf
+            "a - Signup statistics%nb - List of signups%n" +
+            "c - List of signups no team listed%n" +
+            "d - List team info%ne - List info on specific signup%n"+
+            "f - Back to main menu%n";  // Submenu string passed to printf
 
     int mainMenuChoice;
     char subMenuChoice;
@@ -238,6 +311,12 @@ public class HackathonRegistrationApp {
                     break;
 
                 case 'e':
+                    System.out.println("you chose e");
+                    System.out.printf(Sub_Menu);
+                    subMenuChoice = getSubMenuChoice(user_input);
+                    break;
+
+                case 'f':
                     returnToMainMenu = true;
                     mainMenu();
                     break;
@@ -246,9 +325,12 @@ public class HackathonRegistrationApp {
         }
     }
 
-    public static void showRegistrationStatistics(){}
-    public static void showRegistrationEntries(){}
-    puclic static void showTeams(){}
+    public static void showSignUpStatistics(){}
+    public static void showAllSignUps(){}
+    public static void showNoTeamSignUps(){}
+    public static void showTeams(){}
     public static void showTeamInfo(){}
+    public static void lookUpInfoBy(){}
+    public static void SignUp(){}
 
 }

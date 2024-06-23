@@ -220,6 +220,8 @@ values
 
 /*
 * Queries for retrievel of data 
+* Note substitute '?' symbol with appropriate data. '?' symbol is only used for 
+* java prepared statement. 
 *
 * 1. Query aantal registraties
 * select count(student_id) 'aantal registraties' 
@@ -246,7 +248,7 @@ values
 * order by team_id;
 *
 * 6. Query namenlijst van teamleden in een specifieke team inclusief ict vaardigheid en adres
-* select concat(voornaam,' ',achternaam) naam, adres, ict_vaardigheid
+* select concat(voornaam,' ',achternaam) naam, adres, ict_vaardigheid 'favoriete persoonlijke ict vaardigheid'
 * from overzicht
 * where team = '?'; #substitute team name for ?
 *
@@ -266,7 +268,7 @@ values
 *
 * 8. Queries voor nieuwe registratie inclusief team
 * insert into team(naam) 
-* values ('?'); 
+* values ('?'); --
 *
 * insert into person
 * values
@@ -282,5 +284,46 @@ values
 *
 * 9. Query voor het achterhalen van de laatst aangemaakte team 
 * select max(id) from team;
+*
+* 10. Query voor een uitdraai van alle registranten 
+* select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer
+* from overzicht; 
+*
+* 11. Zoek registratent op basis van naam 
+* select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer
+* from overzicht
+* where voornaam like ?; example '%sef'
+*
+* 12. Zoek registrant op basis van email
+* select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer
+* from overzicht
+* where email like ?; example '%sef'
+*
+* 13. Zoek registrant op mobielnummer
+* select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer
+* from overzicht
+* where mobielnummer like ?; example '%1820'
+*  
+* 14. Zoek registrant op geboorte datum 
+* select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer
+* from overzicht
+* where geboorte_datum like '%05'; ?;   example '%2000'
+*
+* of
+*
+* select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer
+* from overzicht
+* where geboorte_datum = ? ;   example '2007-01-16'
+*
+* 15. Zoek registrant op adres
+* select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer
+* from overzicht
+* where naam like ?; example '%bloem'
+*
+* 16. Zoek registrant op leeftijd
+* select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer
+* from overzicht
+* where leeftijd like ?; 
+*
 *
 */
