@@ -19,63 +19,66 @@ public class HackathonRegistrationApp {
 
     static final String SQL_3 = "select team_id, team, count(student_id) 'aantal leden'"+
                                 "from overzicht"+
-                                "where team is not null"+
-                                "group by team" +
-                                "order by team_id;"; // list of teams including team member count
-                                
-    static final String SQL_4 = "select concat(voornaam,' ',achternaam) naam, adres, ict_vaardigheid 'favoriete persoonlijke ict vaardigheid' "+
-                                "from overzicht"+
-                                "where team = '?';"; // list of team members from a specfic team substitute team name for ?
+                                " where team is not null"+
+                                " group by team" +
+                                " order by team_id;"; // list of teams including team member count
+
+    static final String SQL_4 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                " from overzicht; " ; // list of signups
 
     static final String SQL_5 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                "from overzicht; " ; // list of signups
-
-    static final String SQL_6 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                " from overzicht "+ 
+                                " where team_id is null; " ; // list of signups without team
+                                
+    static final String SQL_6 = "select concat(voornaam,' ',achternaam) naam, adres, ict_vaardigheid 'favoriete persoonlijke ict vaardigheid' "+
                                 "from overzicht"+
-                                "where voornaam like ?; " ; // search list of signups on firstname
+                                " where team = '?';"; // list of team members from a specfic team substitute team name for ?
 
     static final String SQL_7 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
                                 "from overzicht"+
-                                "where achternaam like ?; " ; // search list of signups on lastname
+                                "where voornaam like ?; " ; // search list of signups on firstname
 
     static final String SQL_8 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
                                 "from overzicht"+
-                                "where leeftijd like ?; " ; // search list of signups on age
+                                "where achternaam like ?; " ; // search list of signups on lastname
 
     static final String SQL_9 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
                                 "from overzicht"+
-                                "where geboorte_datum like ?; " ; // search list of signups on date of birth
+                                "where leeftijd like ?; " ; // search list of signups on age
 
     static final String SQL_10 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
                                 "from overzicht"+
                                 "where geboorte_datum like ?; " ; // search list of signups on date of birth
 
-
     static final String SQL_11 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                 "from overzicht"+
-                                 "where email like ?; " ; // search list of signups on email
+                                "from overzicht"+
+                                "where geboorte_datum like ?; " ; // search list of signups on date of birth
 
     static final String SQL_12 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
                                  "from overzicht"+
-                                 "where adres like ?; " ; // search list of signups on adres
+                                 "where email like ?; " ; // search list of signups on email
 
     static final String SQL_13 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
                                  "from overzicht"+
+                                 "where adres like ?; " ; // search list of signups on adres
+
+    static final String SQL_14 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
+                                 "from overzicht"+
                                  "where mobielnummer like ?; " ; // search list of signups on mobilenumber
 
-    static final String SQL_14 = "insert into team(naam)"+
+    static final String SQL_15 = "insert into team(naam)"+
                                  "values"+
                                  "(?);" ; // insert into team
 
-    static final String SQL_15 = "insert into person"+
+    static final String SQL_16 = "insert into person"+
                                  "values"+
                                  "(?,?,?,?,?,?);" ; // insert into person
 
-    static final String SQL_16 = "insert into ict_vaardigheid"+
+    static final String SQL_17 = "insert into ict_vaardigheid"+
                                  "values"+
                                  "(?,?);" ; // insert into ict_vaardigheid
                                  
-    static final String SQL_17 = "insert into contact_info"+
+    static final String SQL_18 = "insert into contact_info"+
                                  "values"+
                                  "(?,?,?,?,?);" ; // insert into contact_info
 
@@ -84,16 +87,18 @@ public class HackathonRegistrationApp {
     // static Strings for console menu
     static final String welcome = "Welcome to the Hackathon Registration console%n";
     static final String exit =  "Thank you for using the console%nSee you next time%n";
-    static final String Main_Menu = "What would you like to do:%n"+
+    static final String Main_Menu = "%nWhat would you like to do:%n"+
             "1 - Register%n2 - Lookup info%n3 - Exit%n"; // Main menu passed to printf
-    static final String Sub_Menu = "What would you like to lookup?%n" +
+    static final String Sub_Menu = "%nWhat would you like to lookup?%n" +
             "a - Signup statistics%nb - List of signups%n" +
             "c - List of signups no team listed%n" +
             "d - List team info%ne - List info on specific signup%n"+
             "f - Back to main menu%n";  // Submenu string passed to printf
+    static final String DetailedTeamInfo ="Enter the Team ID to display detailed Teaminfo%n";
 
     int mainMenuChoice;
     char subMenuChoice;
+    int teamChoice;
     static boolean quit = false;
     static boolean returnToMainMenu = false;
     String person[]; // array for person objects
@@ -111,6 +116,9 @@ public class HackathonRegistrationApp {
 
     public static char getSubMenuChoice(Scanner user_input) {
         return user_input.next().charAt(0);
+    }
+    public static int getTeamChoice(Scanner user_input) {
+        return user_input.nextInt();
     }
 
     public class Person {
@@ -287,19 +295,19 @@ public class HackathonRegistrationApp {
 
             switch (subMenuChoice) {
                 case 'a':
-                    System.out.println("you chose a");
+                    showSignUpStatistics();
                     System.out.printf(Sub_Menu);
                     subMenuChoice = getSubMenuChoice(user_input);
                     break;
 
                 case 'b':
-                    System.out.println("you chose b");
+                    showAllSignUps();
                     System.out.printf(Sub_Menu);
                     subMenuChoice = getSubMenuChoice(user_input);
                     break;
 
                 case 'c':
-                    System.out.println("you chose c");
+                    showNoTeamSignUps();
                     System.out.printf(Sub_Menu);
                     subMenuChoice = getSubMenuChoice(user_input);
                     break;
@@ -325,11 +333,136 @@ public class HackathonRegistrationApp {
         }
     }
 
-    public static void showSignUpStatistics(){}
-    public static void showAllSignUps(){}
-    public static void showNoTeamSignUps(){}
-    public static void showTeams(){}
-    public static void showTeamInfo(){}
+    public static void showSignUpStatistics(){
+       
+       try (
+            // Connection and Statement objects 
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);             
+            Statement stmt_1 = conn.createStatement();
+            //Statement stmt_2 = conn.createStatement();
+            //Statement stmt_3 = conn.createStatement();
+            ResultSet rs_1 = stmt_1.executeQuery(SQL_1);
+            ResultSet rs_2 = stmt_1.executeQuery(SQL_2);
+            ResultSet rs_3 = stmt_1.executeQuery(SQL_3);
+       ) {
+            
+            
+            while (rs_1.next()) {
+                System.out.printf("--------------------------------%n");
+                System.out.println("Showing Signup statistics");
+                System.out.printf("--------------------------------%n");
+                System.out.printf("Total signups: %d%n",rs_1.getInt("totaal registraties"));
+                System.out.printf("--------------------------------%n");
+                System.out.printf("Signups in a team: %d%n", rs_1.getInt("registanten in een team"));
+                System.out.printf("--------------------------------%n");
+                System.out.printf("Signups without a team: %d%n", rs_1.getInt("registranten zonder team"));
+            }
+            rs_1.close();
+            while (rs_2.next()) {
+                System.out.printf("--------------------------------%n");
+                System.out.printf("Total number of teams: %d%n", rs_2.getInt("count(id)"));
+                System.out.printf("--------------------------------%n");
+            }
+            rs_2.close();
+
+            System.out.printf("--------------------------------%n");
+            System.out.printf("Team list including member count%n");
+            System.out.printf("--------------------------------%n");
+            System.out.printf("| %-8s | %-20s | %-3s |%n","Team ID","Team","Member count");
+            while (rs_3.next()) {
+                
+                System.out.printf("| %-8s | %-20s | %-3s |%n",rs_3.getInt("team_id"),rs_3.getString("team"),rs_3.getInt("aantal leden"));
+            }
+
+       } catch (SQLException e) {
+        // Catch errors 
+            e.printStackTrace();
+       }
+       finally{
+        //stmt_1.close();
+        //rs_2.close();
+        
+       }
+    }
+    public static void showAllSignUps(){
+
+        try(
+            // Connection and Statement objects 
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Statement stmt_4 = conn.createStatement();
+            ResultSet rs_4 = stmt_4.executeQuery(SQL_4);
+        ) {
+            System.out.printf("--------------------------------%n");
+            System.out.printf("Showing Signup list%n");
+            System.out.printf("--------------------------------%n");
+            System.out.printf("| %-8s | %-20s | %-3s | %-10s | %-10s | %-10s | %-10s |%n","Student ID","Name","Age","Date of birth","Email","Adres","Mobile number");
+            while (rs_4.next()) {
+                System.out.printf("| %-10s | %-20s | %-3s | %-10s | %-10s | %-10s | %-10s |%n",rs_4.getInt(1),rs_4.getString(2),rs_4.getInt(3),rs_4.getDate(4),rs_4.getString(5),rs_4.getString(6),rs_4.getString(7));
+            }
+            rs_4.close();
+        } catch (SQLException e) {
+            // Catch SQL errors
+            e.printStackTrace();
+        }
+        finally{
+
+        }
+    }
+    public static void showNoTeamSignUps(){
+        try (
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Statement stmt_5 = conn.createStatement();
+            ResultSet rs_5 = stmt_5.executeQuery(SQL_5);
+        ){
+            System.out.printf("--------------------------------%n");
+            System.out.printf("Showing List of Signup with no team%n");
+            System.out.printf("--------------------------------%n");
+            System.out.printf("| %-8s | %-20s | %-3s | %-10s | %-10s | %-10s | %-10s |%n","Student ID","Name","Age","Date of birth","Email","Adres","Mobile number");
+            while (rs_5.next()) {
+                System.out.printf("| %-10s | %-20s | %-3s | %-10s | %-10s | %-10s | %-10s |%n",rs_5.getInt(1),rs_5.getString(2),rs_5.getInt(3),rs_5.getDate(4),rs_5.getString(5),rs_5.getString(6),rs_5.getString(7));
+            }
+            rs_5.close();
+        } catch (SQLException e) {
+            // // Catch SQL errors
+            e.printStackTrace();
+        }
+    }
+    public static void showTeams(){
+        try (
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            Statement stmt_1 = conn.createStatement();
+            ResultSet rs_3 = stmt_1.executeQuery(SQL_3);
+        ){
+            System.out.printf("--------------------------------%n");
+            System.out.printf("Team list including member count%n");
+            System.out.printf("--------------------------------%n");
+            System.out.printf("| %-8s | %-20s | %-3s |%n","Team ID","Team","Member count");
+            while (rs_3.next()) {
+                
+                System.out.printf("| %-8s | %-20s | %-3s |%n",rs_3.getInt("team_id"),rs_3.getString("team"),rs_3.getInt("aantal leden"));
+            }
+        } catch (SQLException e) {
+            // // Catch SQL errors
+            e.printStackTrace();
+        }
+    }
+    /*
+    public static void showDetailedTeamInfo(){
+        showTeams();
+        System.out.printf(DetailedTeamInfo);
+        teamChoice = getTeamChoice(user_input);
+        try (
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            PreparedStatement pstmt_1 = conn.prepareStatement(SQL_6);
+            pstmt_1.setInt(1, teamChoice);
+        ){
+            
+        } catch (Exception e) {
+            // Catch SQL Exception
+            e.printStackTrace();
+        }
+    }
+        */
     public static void lookUpInfoBy(){}
     public static void SignUp(){}
 
