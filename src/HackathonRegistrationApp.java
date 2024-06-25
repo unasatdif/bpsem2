@@ -30,9 +30,9 @@ public class HackathonRegistrationApp {
                                 " from overzicht "+ 
                                 " where team_id is null; " ; // list of signups without team
                                 
-    static final String SQL_6 = "select concat(voornaam,' ',achternaam) naam, adres, ict_vaardigheid 'favoriete persoonlijke ict vaardigheid' "+
+    static final String SQL_6 = "select team, concat(voornaam,' ',achternaam) naam, adres, ict_vaardigheid 'favoriete persoonlijke ict vaardigheid' "+
                                 "from overzicht"+
-                                " where team = '?';"; // list of team members from a specfic team substitute team name for ?
+                                " where team_id = ?;"; // list of team members from a specfic team substitute team name for ?
 
     static final String SQL_7 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
                                 "from overzicht"+
@@ -95,10 +95,13 @@ public class HackathonRegistrationApp {
             "d - List team info%ne - List info on specific signup%n"+
             "f - Back to main menu%n";  // Submenu string passed to printf
     static final String DetailedTeamInfo ="Enter the Team ID to display detailed Teaminfo%n";
+    
 
     int mainMenuChoice;
     char subMenuChoice;
     int teamChoice;
+    int searchTerm;
+    String searchValue;
     static boolean quit = false;
     static boolean returnToMainMenu = false;
     String person[]; // array for person objects
@@ -313,7 +316,7 @@ public class HackathonRegistrationApp {
                     break;
 
                 case 'd':
-                    System.out.println("you chose d");
+                    showDetailedTeamInfo();
                     System.out.printf(Sub_Menu);
                     subMenuChoice = getSubMenuChoice(user_input);
                     break;
@@ -333,6 +336,7 @@ public class HackathonRegistrationApp {
         }
     }
 
+    public static void SignUp(){}
     public static void showSignUpStatistics(){
        
        try (
@@ -441,29 +445,44 @@ public class HackathonRegistrationApp {
                 
                 System.out.printf("| %-8s | %-20s | %-3s |%n",rs_3.getInt("team_id"),rs_3.getString("team"),rs_3.getInt("aantal leden"));
             }
+            rs_3.close();
         } catch (SQLException e) {
             // // Catch SQL errors
             e.printStackTrace();
         }
     }
-    /*
+    
     public static void showDetailedTeamInfo(){
         showTeams();
         System.out.printf(DetailedTeamInfo);
-        teamChoice = getTeamChoice(user_input);
+        int teamChoice = getTeamChoice(user_input);
+        
         try (
             Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             PreparedStatement pstmt_1 = conn.prepareStatement(SQL_6);
-            pstmt_1.setInt(1, teamChoice);
-        ){
             
+        ){
+            pstmt_1.setInt(1, teamChoice);
+            ResultSet rs_6 = pstmt_1.executeQuery();
+            System.out.printf("--------------------------------%n");
+            rs_6.next();
+            System.out.printf("Team Info for team: %s%n",rs_6.getString(1));
+            System.out.printf("--------------------------------%n");
+            System.out.printf("| %-8s | %-20s | %-3s |%n","Naam","Adres","Favorite ICT Skill");
+            while (rs_6.next()) {
+                System.out.printf("| %-8s | %-20s | %-3s |%n",rs_6.getString(2),rs_6.getString(3),rs_6.getString(4)); 
+            }
+            rs_6.close();
+
         } catch (Exception e) {
             // Catch SQL Exception
             e.printStackTrace();
         }
     }
-        */
-    public static void lookUpInfoBy(){}
-    public static void SignUp(){}
+        
+    public static void lookUpInfoBy(){
+        
+    }
+    
 
 }

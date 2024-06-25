@@ -250,7 +250,7 @@ values
 * 6. Query namenlijst van teamleden in een specifieke team inclusief ict vaardigheid en adres
 * select concat(voornaam,' ',achternaam) naam, adres, ict_vaardigheid 'favoriete persoonlijke ict vaardigheid'
 * from overzicht
-* where team = '?'; #substitute team name for ?
+* where team_id = ?; #substitute team name for ?
 *
 * 7. Queries voor nieuwe registratie zonder team
 * insert into person
