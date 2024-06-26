@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class aditsoriginal {
-    static final String DB_URL = "jdbc:mysql://localhost/bpdb";
-    static final String USER = "root";
-    static final String PASS = "Adrena4Line";
+    static final String DB_URL = "jdbc:mariadb://localhost/bpdb"; //enter your db url 
+    static final String USER = "dimi"; //enter your db user 
+    static final String PASS = "dimi"; // enter your db password
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -137,12 +137,12 @@ public class aditsoriginal {
                 case 'd':
                     System.out.println("Totaal aantal registranten:");
                     String sqlD = "SELECT COUNT(student_id) AS totaal_registranten FROM person";
-                    displaySingleResult(stmt.executeQuery(sqlD));
+                    displaySingleResultA(stmt.executeQuery(sqlD));
                     break;
                 case 'e':
                     System.out.println("Registranten zonder groep:");
                     String sqlE = "select count(student_id) from person where team_id is null;";
-                    displayResults(stmt.executeQuery(sqlE));
+                    displaySingleResultB(stmt.executeQuery(sqlE));
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -166,10 +166,17 @@ public class aditsoriginal {
         }
     }
 
-    private static void displaySingleResult(ResultSet rs) throws SQLException {
+    private static void displaySingleResultA(ResultSet rs) throws SQLException {
         if (rs.next()) {
             int count = rs.getInt(1);
             System.out.println("Totaal aantal registranten: " + count);
+        }
+    }
+
+    private static void displaySingleResultB(ResultSet rs) throws SQLException {
+        if (rs.next()) {
+            int count = rs.getInt(1);
+            System.out.println("Totaal aantal registranten niet in een groep: " + count);
         }
     }
 
