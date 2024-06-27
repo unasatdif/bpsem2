@@ -93,8 +93,8 @@ public class HackathonRegistrationApp {
             "d - List team info%ne - List info on specific signup%n"+
             "f - Back to main menu%n";  // Submenu string passed to printf
     static final String detailedTeamInfo ="Enter the Team ID to display detailed Teaminfo%n";
-    static final String searchText = "Please select a search term to begin the search%n Search for signup info by:%n"+
-                                    "1 - Student ID%n2 -Firstname%n3 - Lastname%n4 - Age%n5 - Date of birth%n6 - Email"+
+    static final String searchText = "Please select a search term to begin the search%nSearch for signup info by:%n"+
+                                    "1 - Student ID%n2 - Firstname%n3 - Lastname%n4 - Age%n5 - Date of birth%n6 - Email"+
                                     "%n7 - Adres%n8 - Mobilenumber%n9 - Quit search%n";
     // all signup Strings 
     static final String signUpText = "How would you like to sign up?%n1. Create a new team%n2. Join an existing team%n3. Abort mission!";
@@ -112,6 +112,20 @@ public class HackathonRegistrationApp {
     static final String signUpPrompt_11 = "Enter your adres:%n";
     static final String signUpPrompt_12 = "Enter the name for your team:%n";
 
+    // all search Strings 
+    static final String searchPrompt_1 =  "Enter student id:%n";
+    static final String searchPrompt_2 =  "Enter firstname:%n";
+    static final String searchPrompt_3 =  "Enter lastname:%n";
+    static final String searchPrompt_4 =  "Enter date of birth:%n";
+    static final String searchPrompt_5 =  "Enter age:%n";
+    static final String searchPrompt_6 =  "Enter team id:%n";
+    static final String searchPrompt_7 =  "Enter favorite ICT skill:%n";
+    static final String searchPrompt_8 =  "Enter email:%n";
+    static final String searchPrompt_9 =  "Enter telefoon number:%n";
+    static final String searchPrompt_10 = "Enter mobile number:%n";
+    static final String searchPrompt_11 = "Enter adres:%n";
+    static final String searchPrompt_12 = "Enter the name of the team:%n";
+
     // all variables 
     int mainMenuChoice;
     char subMenuChoice;
@@ -127,15 +141,14 @@ public class HackathonRegistrationApp {
     String person[]; // array for person objects
     static Scanner user_input = new Scanner(System.in);
 
+    // all methods to get user input from scanner user_input
     public static int getMainMenuChoice(Scanner user_input) {
         return user_input.nextInt();
     }
-
     
     public static int getSignUpChoice(Scanner user_input) {
         return user_input.nextInt();
-    }
-    
+    }    
 
     public static char getSubMenuChoice(Scanner user_input) {
         return user_input.next().charAt(0);
@@ -350,7 +363,7 @@ public class HackathonRegistrationApp {
                     break;
 
                 case 'e':
-                    System.out.println("you chose e");
+                    searchMenu();
                     System.out.printf(subMenu);
                     subMenuChoice = getSubMenuChoice(user_input);
                     break;
@@ -396,11 +409,12 @@ public class HackathonRegistrationApp {
         System.out.printf(searchText);
         int searchTerm = getSearchTerm(user_input);
         String searchValue = getSearchValue(user_input);
-
         while (!noSearch){
             switch (searchTerm){
                 case 1:
                     lookUpInfoByStudentId();
+                    System.out.printf(searchText);
+                    searchTerm = getSearchTerm(user_input);
                     break;
                 case 2:
                     lookUpInfoByFirstName();
@@ -491,6 +505,7 @@ public class HackathonRegistrationApp {
         
        }
     }
+
     public static void showAllSignUps(){
 
         try(
@@ -515,6 +530,7 @@ public class HackathonRegistrationApp {
 
         }
     }
+
     public static void showNoTeamSignUps(){
         try (
             Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
@@ -534,6 +550,7 @@ public class HackathonRegistrationApp {
             e.printStackTrace();
         }
     }
+
     public static void showTeams(){
         try (
             Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
@@ -582,18 +599,14 @@ public class HackathonRegistrationApp {
             e.printStackTrace();
         }
     }
+    
     // searchMenu methods     
     public static void lookUpInfoByStudentId(){
-        System.out.println("Enter Student ID:");
+
+        System.out.printf(searchPrompt_1);
         String searchValue = getSearchValue(user_input);
         Integer studentID;
-        /*try {
-            studentID = Integer.valueOf(searchValue);
-        } catch (Exception e) {
-            // Catch format error
-            e.printStackTrace();
-        }*/
-
+       
         try(
             Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             PreparedStatement pstmt_2 = conn.prepareStatement(SQL_10);
@@ -601,12 +614,12 @@ public class HackathonRegistrationApp {
             studentID = Integer.valueOf(searchValue);
             pstmt_2.setInt(1,studentID);
             ResultSet rs_7 = pstmt_2.executeQuery();
-            System.out.printf("-----------------------------------------");
+            System.out.printf("%n-----------------------------------------%n");
             System.out.printf("Showing search results for StudentID: %d",studentID);
-            System.out.printf("-----------------------------------------");
-            System.out.printf("|%-20s |%-3s |%-10s |%-10s |% |% | ");
+            System.out.printf("%n-----------------------------------------%n");
+            System.out.printf("|%-10s |%-20s |%-4s |%-10s |%-15s |%-20s |%-14s |%n","Student ID","Name","Age","Date of birth","Email","Adres","Mobilenumber");
             while(rs_7.next()){
-
+                System.out.printf("|%-10s |%-20s |%-4s |%-10s |%-20s |%-2s |%-14s |%n",rs_7.getInt(1),rs_7.getString(2),rs_7.getString(3),rs_7.getDate(4),rs_7.getString(5),rs_7.getString(6),rs_7.getString(7));
             }
         } catch(SQLException e){
             // Catch SQL Exception
