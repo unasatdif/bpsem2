@@ -65,7 +65,7 @@ public class HackathonRegistrationApp {
     static final String SQL_14 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
                                  "from overzicht"+
                                  "where mobielnummer like ?; " ; // search list of signups on mobilenumber
-
+    // queries used to insert data into the database 
     static final String SQL_15 = "insert into team(naam)"+
                                  "values"+
                                  "(?);" ; // insert into team
@@ -82,28 +82,44 @@ public class HackathonRegistrationApp {
                                  "values"+
                                  "(?,?,?,?,?);" ; // insert into contact_info
 
-    // queries used to insert info into the database
-
     // static Strings for console menu
     static final String welcome = "Welcome to the Hackathon Registration console%n";
     static final String exit =  "Thank you for using the console%nSee you next time%n";
-    static final String Main_Menu = "%nWhat would you like to do:%n"+
+    static final String mainMenu = "%nWhat would you like to do:%n"+
             "1 - Register%n2 - Lookup info%n3 - Exit%n"; // Main menu passed to printf
-    static final String Sub_Menu = "%nWhat would you like to lookup?%n" +
+    static final String subMenu = "%nWhat would you like to lookup?%n" +
             "a - Signup statistics%nb - List of signups%n" +
             "c - List of signups no team listed%n" +
             "d - List team info%ne - List info on specific signup%n"+
             "f - Back to main menu%n";  // Submenu string passed to printf
-    static final String DetailedTeamInfo ="Enter the Team ID to display detailed Teaminfo%n";
-    
+    static final String detailedTeamInfo ="Enter the Team ID to display detailed Teaminfo%n";
+    static final String searchText = "Select a search term to begin the search%n Search for signup info by:%n"+
+                                    "1 - Firstname%n2 - Lastname%n3 - Age%n4 - Date of birth%n5 - Email%n6 - Adres%n7 - Mobilenumber%n";
+    // all signup Strings 
+    static final String signUpText = "How would you like to sign up?%n 1. Create a new team%n2. Join an existing team%n 3. Abort mission!";
+    static final String preSignUpPrompt = "Please enter all requested signup information:%n";
+    static final String signUpPrompt_1 =  "Enter your student id:%n";
+    static final String signUpPrompt_2 =  "Enter your firstname:%n";
+    static final String signUpPrompt_3 =  "Enter your lastname:%n";
+    static final String signUpPrompt_4 =  "Enter your date of birth:%n";
+    static final String signUpPrompt_5 =  "Enter your age:%n";
+    static final String signUpPrompt_6 =  "Enter your team id:%n";
+    static final String signUpPrompt_7 =  "Enter your favorite ICT skill:%n";
+    static final String signUpPrompt_8 =  "Enter your email:%n";
+    static final String signUpPrompt_9 =  "Enter your telefoon number:%n";
+    static final String signUpPrompt_10 = "Enter your mobile number:%n";
+    static final String signUpPrompt_11 = "Enter your adres:%n";
 
+    // all variables 
     int mainMenuChoice;
     char subMenuChoice;
+    int signUpChoice;
     int teamChoice;
     int searchTerm;
     String searchValue;
-    static boolean quit = false;
+    static boolean quit = false; // quit program boolean
     static boolean returnToMainMenu = false;
+    static boolean noSignUp = false; 
     String person[]; // array for person objects
     static Scanner user_input = new Scanner(System.in);
 
@@ -111,17 +127,25 @@ public class HackathonRegistrationApp {
         return user_input.nextInt();
     }
 
-    /*
-     * public static int setMainMenuChoice(Scanner user_input) {
-     * mainMenuChoice = user_input.nextInt();
-     * }
-     */
+    
+    public static int getSignUpChoice(Scanner user_input) {
+        return user_input.nextInt();
+    }
+    
 
     public static char getSubMenuChoice(Scanner user_input) {
         return user_input.next().charAt(0);
     }
     public static int getTeamChoice(Scanner user_input) {
         return user_input.nextInt();
+    }
+
+    public static int getSearchTerm(Scanner user_input){
+        return user_input.nextInt();
+    }
+
+    public static String getSearchValue(Scanner user_input){
+        return user_input.next();
     }
 
     public class Person {
@@ -252,13 +276,12 @@ public class HackathonRegistrationApp {
     }
 
     public static void main(String[] args) throws Exception {
-
         System.out.printf(welcome);
         mainMenu();
     }
 
     public static void mainMenu() {
-        System.out.printf(Main_Menu);
+        System.out.printf(mainMenu);
         int mainMenuChoice = getMainMenuChoice(user_input);
 
         while (!quit) {
@@ -266,13 +289,13 @@ public class HackathonRegistrationApp {
             switch (mainMenuChoice) {
                 case 1:
                     System.out.println("you chose 1");
-                    System.out.printf(Main_Menu);
+                    System.out.printf(mainMenu);
                     mainMenuChoice = getMainMenuChoice(user_input);
 
                     break;
 
                 case 2:
-                    System.out.println("you chose 2");
+                    //System.out.println("you chose 2");
                     subMenu();
 
                     break;
@@ -291,7 +314,7 @@ public class HackathonRegistrationApp {
 
     public static void subMenu() {
 
-        System.out.printf(Sub_Menu);
+        System.out.printf(subMenu);
         char subMenuChoice = getSubMenuChoice(user_input);
 
         while (!returnToMainMenu) {
@@ -299,31 +322,31 @@ public class HackathonRegistrationApp {
             switch (subMenuChoice) {
                 case 'a':
                     showSignUpStatistics();
-                    System.out.printf(Sub_Menu);
+                    System.out.printf(subMenu);
                     subMenuChoice = getSubMenuChoice(user_input);
                     break;
 
                 case 'b':
                     showAllSignUps();
-                    System.out.printf(Sub_Menu);
+                    System.out.printf(subMenu);
                     subMenuChoice = getSubMenuChoice(user_input);
                     break;
 
                 case 'c':
                     showNoTeamSignUps();
-                    System.out.printf(Sub_Menu);
+                    System.out.printf(subMenu);
                     subMenuChoice = getSubMenuChoice(user_input);
                     break;
 
                 case 'd':
                     showDetailedTeamInfo();
-                    System.out.printf(Sub_Menu);
+                    System.out.printf(subMenu);
                     subMenuChoice = getSubMenuChoice(user_input);
                     break;
 
                 case 'e':
                     System.out.println("you chose e");
-                    System.out.printf(Sub_Menu);
+                    System.out.printf(subMenu);
                     subMenuChoice = getSubMenuChoice(user_input);
                     break;
 
@@ -336,7 +359,29 @@ public class HackathonRegistrationApp {
         }
     }
 
-    public static void SignUp(){}
+    public static void signUpMenu(){
+        System.out.printf(signUpText);
+        int signUpChoice = getSignUpChoice(user_input);
+        while (!noSignUp) {
+            switch (signUpChoice) {
+                case 1:
+                    
+                    break;
+                case 2:
+                    showTeams();
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    }
+
+    public static void SignUp(){
+        //signUpMenu();
+
+
+    }
     public static void showSignUpStatistics(){
        
        try (
@@ -377,6 +422,7 @@ public class HackathonRegistrationApp {
                 
                 System.out.printf("| %-8s | %-20s | %-3s |%n",rs_3.getInt("team_id"),rs_3.getString("team"),rs_3.getInt("aantal leden"));
             }
+            rs_3.close();
 
        } catch (SQLException e) {
         // Catch errors 
@@ -454,7 +500,7 @@ public class HackathonRegistrationApp {
     
     public static void showDetailedTeamInfo(){
         showTeams();
-        System.out.printf(DetailedTeamInfo);
+        System.out.printf(detailedTeamInfo);
         int teamChoice = getTeamChoice(user_input);
         
         try (
