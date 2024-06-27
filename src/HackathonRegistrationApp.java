@@ -17,69 +17,69 @@ public class HackathonRegistrationApp {
 
     static final String SQL_2 = "select count(id) from team;"; //total number of teams
 
-    static final String SQL_3 = "select team_id, team, count(student_id) 'aantal leden'"+
-                                "from overzicht"+
-                                " where team is not null"+
-                                " group by team" +
-                                " order by team_id;"; // list of teams including team member count
+    static final String SQL_3 = "select team_id, team, count(student_id) 'aantal leden' "+
+                                "from overzicht "+
+                                "where team is not null "+
+                                "group by team " +
+                                "order by team_id;"; // list of teams including team member count
 
-    static final String SQL_4 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                " from overzicht; " ; // list of signups
+    static final String SQL_4 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer "+
+                                "from overzicht; " ; // list of signups
 
-    static final String SQL_5 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                " from overzicht "+ 
-                                " where team_id is null; " ; // list of signups without team
+    static final String SQL_5 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer "+
+                                "from overzicht "+ 
+                                "where team_id is null; " ; // list of signups without team
                                 
     static final String SQL_6 = "select team, concat(voornaam,' ',achternaam) naam, adres, ict_vaardigheid 'favoriete persoonlijke ict vaardigheid' "+
-                                "from overzicht"+
-                                " where team_id = ?;"; // list of team members from a specfic team substitute team name for ?
+                                "from overzicht "+
+                                "where team_id = ?;"; // list of team members from a specfic team substitute team name for ?
 
-    static final String SQL_7 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                "from overzicht"+
+    static final String SQL_7 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer "+
+                                "from overzicht "+
                                 "where voornaam like ?; " ; // search list of signups on firstname
 
-    static final String SQL_8 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                "from overzicht"+
-                                "where achternaam like ?; " ; // search list of signups on lastname
+    static final String SQL_8 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer "+
+                                "from overzicht "+
+                                "where achternaam like ?;" ; // search list of signups on lastname
 
-    static final String SQL_9 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                "from overzicht"+
+    static final String SQL_9 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer "+
+                                "from overzicht "+
                                 "where leeftijd like ?; " ; // search list of signups on age
 
-    static final String SQL_10 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                "from overzicht"+
+    static final String SQL_10 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer "+
+                                "from overzicht "+
+                                "where student_id = ?; " ; // search list of signups on student_id
+
+    static final String SQL_11 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer "+
+                                "from overzicht "+
                                 "where geboorte_datum like ?; " ; // search list of signups on date of birth
 
-    static final String SQL_11 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                "from overzicht"+
-                                "where geboorte_datum like ?; " ; // search list of signups on date of birth
-
-    static final String SQL_12 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                 "from overzicht"+
+    static final String SQL_12 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer "+
+                                 "from overzicht "+
                                  "where email like ?; " ; // search list of signups on email
 
-    static final String SQL_13 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                 "from overzicht"+
+    static final String SQL_13 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer "+
+                                 "from overzicht "+
                                  "where adres like ?; " ; // search list of signups on adres
 
-    static final String SQL_14 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer"+
-                                 "from overzicht"+
+    static final String SQL_14 = "select student_id, concat(voornaam,' ',achternaam) naam, leeftijd, geboorte_datum,email,adres,mobielnummer "+
+                                 "from overzicht "+
                                  "where mobielnummer like ?; " ; // search list of signups on mobilenumber
     // queries used to insert data into the database 
-    static final String SQL_15 = "insert into team(naam)"+
-                                 "values"+
+    static final String SQL_15 = "insert into team(naam) "+
+                                 "values "+
                                  "(?);" ; // insert into team
 
-    static final String SQL_16 = "insert into person"+
-                                 "values"+
+    static final String SQL_16 = "insert into person "+
+                                 "values "+
                                  "(?,?,?,?,?,?);" ; // insert into person
 
-    static final String SQL_17 = "insert into ict_vaardigheid"+
-                                 "values"+
+    static final String SQL_17 = "insert into ict_vaardigheid "+
+                                 "values "+
                                  "(?,?);" ; // insert into ict_vaardigheid
                                  
-    static final String SQL_18 = "insert into contact_info"+
-                                 "values"+
+    static final String SQL_18 = "insert into contact_info "+
+                                 "values "+
                                  "(?,?,?,?,?);" ; // insert into contact_info
 
     // static Strings for console menu
@@ -122,7 +122,8 @@ public class HackathonRegistrationApp {
     static boolean quit = false; // quit program boolean
     static boolean returnToMainMenu = false;
     static boolean noSignUp = false;
-    static boolean noSearch = false; 
+    static boolean noSearch = false;
+    static boolean noRerun = false; 
     String person[]; // array for person objects
     static Scanner user_input = new Scanner(System.in);
 
@@ -576,13 +577,43 @@ public class HackathonRegistrationApp {
             }
             rs_6.close();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             // Catch SQL Exception
             e.printStackTrace();
         }
     }
     // searchMenu methods     
-    public static void lookUpInfoByStudentId(){}
+    public static void lookUpInfoByStudentId(){
+        System.out.println("Enter Student ID:");
+        String searchValue = getSearchValue(user_input);
+        Integer studentID;
+        /*try {
+            studentID = Integer.valueOf(searchValue);
+        } catch (Exception e) {
+            // Catch format error
+            e.printStackTrace();
+        }*/
+
+        try(
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            PreparedStatement pstmt_2 = conn.prepareStatement(SQL_10);
+        ){
+            studentID = Integer.valueOf(searchValue);
+            pstmt_2.setInt(1,studentID);
+            ResultSet rs_7 = pstmt_2.executeQuery();
+            System.out.printf("-----------------------------------------");
+            System.out.printf("Showing search results for StudentID: %d",studentID);
+            System.out.printf("-----------------------------------------");
+            System.out.printf("|%-20s |%-3s |%-10s |%-10s |% |% | ");
+            while(rs_7.next()){
+
+            }
+        } catch(SQLException e){
+            // Catch SQL Exception
+            e.printStackTrace();
+        }
+        finally{}
+    }
     public static void lookUpInfoByFirstName(){}
     public static void lookUpInfoByLastName(){}
     public static void lookUpInfoByAge(){}
