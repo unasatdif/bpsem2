@@ -93,10 +93,11 @@ public class HackathonRegistrationApp {
             "d - List team info%ne - List info on specific signup%n"+
             "f - Back to main menu%n";  // Submenu string passed to printf
     static final String detailedTeamInfo ="Enter the Team ID to display detailed Teaminfo%n";
-    static final String searchText = "Select a search term to begin the search%n Search for signup info by:%n"+
-                                    "1 - Firstname%n2 - Lastname%n3 - Age%n4 - Date of birth%n5 - Email%n6 - Adres%n7 - Mobilenumber%n";
+    static final String searchText = "Please select a search term to begin the search%n Search for signup info by:%n"+
+                                    "1 - Student ID%n2 -Firstname%n3 - Lastname%n4 - Age%n5 - Date of birth%n6 - Email"+
+                                    "%n7 - Adres%n8 - Mobilenumber%n9 - Quit search%n";
     // all signup Strings 
-    static final String signUpText = "How would you like to sign up?%n 1. Create a new team%n2. Join an existing team%n 3. Abort mission!";
+    static final String signUpText = "How would you like to sign up?%n1. Create a new team%n2. Join an existing team%n3. Abort mission!";
     static final String preSignUpPrompt = "Please enter all requested signup information:%n";
     static final String signUpPrompt_1 =  "Enter your student id:%n";
     static final String signUpPrompt_2 =  "Enter your firstname:%n";
@@ -109,6 +110,7 @@ public class HackathonRegistrationApp {
     static final String signUpPrompt_9 =  "Enter your telefoon number:%n";
     static final String signUpPrompt_10 = "Enter your mobile number:%n";
     static final String signUpPrompt_11 = "Enter your adres:%n";
+    static final String signUpPrompt_12 = "Enter the name for your team:%n";
 
     // all variables 
     int mainMenuChoice;
@@ -119,7 +121,8 @@ public class HackathonRegistrationApp {
     String searchValue;
     static boolean quit = false; // quit program boolean
     static boolean returnToMainMenu = false;
-    static boolean noSignUp = false; 
+    static boolean noSignUp = false;
+    static boolean noSearch = false; 
     String person[]; // array for person objects
     static Scanner user_input = new Scanner(System.in);
 
@@ -136,6 +139,7 @@ public class HackathonRegistrationApp {
     public static char getSubMenuChoice(Scanner user_input) {
         return user_input.next().charAt(0);
     }
+
     public static int getTeamChoice(Scanner user_input) {
         return user_input.nextInt();
     }
@@ -279,7 +283,7 @@ public class HackathonRegistrationApp {
         System.out.printf(welcome);
         mainMenu();
     }
-
+    // all menu methods
     public static void mainMenu() {
         System.out.printf(mainMenu);
         int mainMenuChoice = getMainMenuChoice(user_input);
@@ -362,26 +366,78 @@ public class HackathonRegistrationApp {
     public static void signUpMenu(){
         System.out.printf(signUpText);
         int signUpChoice = getSignUpChoice(user_input);
+        int teamChoice = getTeamChoice(user_input);        
         while (!noSignUp) {
             switch (signUpChoice) {
                 case 1:
                     
                     break;
+
                 case 2:
-                    showTeams();
+                    showTeams();                    
+                    teamChoice = getTeamChoice(user_input);
+
+                    break;
+
+                case 3:
+                    noSignUp = true;
+                    mainMenu();
                     break;
             
                 default:
+                    System.out.println("Select a signup option");
                     break;
             }
         }
     }
 
-    public static void SignUp(){
+    public static void searchMenu(){
+        System.out.printf(searchText);
+        int searchTerm = getSearchTerm(user_input);
+        String searchValue = getSearchValue(user_input);
+
+        while (!noSearch){
+            switch (searchTerm){
+                case 1:
+                    lookUpInfoByStudentId();
+                    break;
+                case 2:
+                    lookUpInfoByFirstName();
+                    break;
+                case 3:
+                    lookUpInfoByLastName();
+                    break;
+                case 4:
+                    lookUpInfoByAge();
+                    break;
+                case 5:
+                    lookUpInfoByDateOfBirth();
+                    break;
+                case 6:
+                    lookUpInfoByEmail();
+                    break;
+                case 7:
+                    lookUpInfoByAdres();
+                    break;
+                case 8:
+                    lookUpInfoByMobileNumber();
+                    break;
+                case 9:
+                    noSearch = true;
+                    subMenu();
+                    break;
+            }
+        }
+
+    }
+    // all other methods
+    public static void signUp(){
         //signUpMenu();
 
 
     }
+
+    //subMenu methods
     public static void showSignUpStatistics(){
        
        try (
@@ -525,10 +581,15 @@ public class HackathonRegistrationApp {
             e.printStackTrace();
         }
     }
-        
-    public static void lookUpInfoBy(){
-        
-    }
+    // searchMenu methods     
+    public static void lookUpInfoByStudentId(){}
+    public static void lookUpInfoByFirstName(){}
+    public static void lookUpInfoByLastName(){}
+    public static void lookUpInfoByAge(){}
+    public static void lookUpInfoByDateOfBirth(){}
+    public static void lookUpInfoByEmail(){}
+    public static void lookUpInfoByAdres(){}
+    public static void lookUpInfoByMobileNumber(){}
     
 
 }
